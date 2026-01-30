@@ -11,6 +11,7 @@ export default function Header() {
   const { items, totalItems, totalPrice, removeFromCart, updateQuantity } = useCart();
   const [scrolled, setScrolled] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -28,16 +29,16 @@ export default function Header() {
 
   return (
     <>
-      {/* Header Mobile-First - Premium Design */}
+      {/* Header Web-Style - Responsive */}
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 safe-top ${
-        scrolled ? "py-3 md:py-3 glass shadow-xl backdrop-blur-xl" : "py-4 md:py-6 bg-white/80 md:bg-transparent backdrop-blur-sm"
+        scrolled ? "py-3 md:py-3 glass shadow-lg backdrop-blur-xl" : "py-4 md:py-6 bg-white md:bg-transparent"
       }`}>
         <div className="max-w-7xl mx-auto px-5 md:px-6 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3 md:gap-3 group">
-            <div className="relative w-12 h-12 md:w-12 md:h-12 rounded-2xl md:rounded-full overflow-hidden border-2 border-brand-caramel/30 group-hover:border-brand-accent transition-all duration-500 shadow-md group-hover:shadow-lg">
+          <Link href="/" className="flex items-center gap-3 group" onClick={() => setIsMobileMenuOpen(false)}>
+            <div className="relative w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-full overflow-hidden border-2 border-brand-caramel/30 group-hover:border-brand-accent transition-all duration-500">
               <Image src="/logo.jpeg" alt="Abou Family" fill className="object-cover" />
             </div>
-            <span className="font-serif text-xl md:text-2xl font-bold tracking-tight text-brand-chocolate hidden sm:block">
+            <span className="font-serif text-lg md:text-2xl font-bold tracking-tight text-brand-chocolate">
               Abou <span className="text-brand-caramel">Family</span>
             </span>
           </Link>
@@ -66,10 +67,25 @@ export default function Header() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
               </svg>
               {totalItems > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-brand-accent text-white text-[10px] font-bold rounded-full flex items-center justify-center animate-bounce">
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-brand-accent text-white text-[10px] font-bold rounded-full flex items-center justify-center">
                   {totalItems}
                 </span>
               )}
+            </button>
+            
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="md:hidden p-2 text-brand-chocolate hover:text-brand-caramel transition-colors"
+              aria-label="Menu"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                {isMobileMenuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
             </button>
             
             <Link href="/boutique" className="hidden md:block btn-animate bg-brand-chocolate text-white px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest shadow-xl hover:bg-brand-caramel">
@@ -77,37 +93,51 @@ export default function Header() {
             </Link>
           </div>
         </div>
-      </header>
 
-      {/* Mobile Bottom Navigation - Premium Design */}
-      <nav className="md:hidden mobile-nav">
-        <div className="flex items-center justify-around py-3 px-2">
-          {navItems.map((item) => {
-            const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
-            return (
+        {/* Mobile Menu Dropdown - Web Style */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden absolute top-full left-0 right-0 bg-white border-t border-brand-cream/30 shadow-xl">
+            <nav className="max-w-7xl mx-auto px-5 py-6 space-y-4">
               <Link
-                key={item.href}
-                href={item.href}
-                className={`flex flex-col items-center gap-1.5 p-3 min-w-[70px] relative rounded-2xl transition-all duration-300 ${
-                  isActive 
-                    ? "text-brand-chocolate bg-brand-beige/50 shadow-sm" 
-                    : "text-brand-chocolate/50 hover:text-brand-chocolate/70"
+                href="/"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={`block py-3 text-base font-bold uppercase tracking-widest transition-colors ${
+                  pathname === "/" ? "text-brand-caramel" : "text-brand-chocolate hover:text-brand-caramel"
                 }`}
               >
-                <span className="text-2xl relative">
-                  {item.icon}
-                  {item.badge && item.badge > 0 && (
-                    <span className="absolute -top-2 -right-2 w-5 h-5 bg-brand-accent text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-lg border-2 border-white">
-                      {item.badge}
-                    </span>
-                  )}
-                </span>
-                <span className={`text-[10px] font-bold ${isActive ? "text-brand-chocolate" : ""}`}>{item.label}</span>
+                Accueil
               </Link>
-            );
-          })}
-        </div>
-      </nav>
+              <Link
+                href="/boutique"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={`block py-3 text-base font-bold uppercase tracking-widest transition-colors ${
+                  pathname === "/boutique" ? "text-brand-caramel" : "text-brand-chocolate hover:text-brand-caramel"
+                }`}
+              >
+                Boutique
+              </Link>
+              <Link
+                href="/publicite"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={`block py-3 text-base font-bold uppercase tracking-widest transition-colors ${
+                  pathname === "/publicite" ? "text-brand-caramel" : "text-brand-chocolate hover:text-brand-caramel"
+                }`}
+              >
+                Publicité
+              </Link>
+              <Link
+                href="/panier"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={`block py-3 text-base font-bold uppercase tracking-widest transition-colors ${
+                  pathname === "/panier" ? "text-brand-caramel" : "text-brand-chocolate hover:text-brand-caramel"
+                }`}
+              >
+                Panier {totalItems > 0 && `(${totalItems})`}
+              </Link>
+            </nav>
+          </div>
+        )}
+      </header>
 
       {/* Side Cart Drawer */}
       <div className={`fixed inset-0 z-[100] transition-opacity duration-500 ${isCartOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>

@@ -88,7 +88,7 @@ export default function RootLayout({
         <StructuredData type="LocalBusiness" />
         <CartProvider>
           <Header />
-          <main className="pb-20 md:pb-0">{children}</main>
+          <main>{children}</main>
           <Footer />
         </CartProvider>
       </body>
