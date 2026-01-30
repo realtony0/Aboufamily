@@ -24,7 +24,7 @@ interface Order {
   id: number;
   customer_name: string;
   customer_phone: string;
-  items: any[];
+  items: Array<{ id: string; name: string; quantity: number; price: number }>;
   total_price: number;
   status: string;
   notes?: string;
@@ -516,8 +516,32 @@ export default function AdminPage() {
 }
 
 // Composants pour chaque onglet
-function ProductsTab({ products, editingProduct, showProductForm, isImporting, onImport, onEdit, onDelete, onSave, onClose, onRefresh }: any) {
-  const [formData, setFormData] = useState({
+interface ProductsTabProps {
+  products: Product[];
+  editingProduct: Product | null;
+  showProductForm: boolean;
+  isImporting: boolean;
+  onImport: () => void;
+  onEdit: (product: Product | null) => void;
+  onDelete: (id: string) => void;
+  onSave: (data: any) => void;
+  onClose: () => void;
+  onRefresh: () => void;
+}
+
+function ProductsTab({ products, editingProduct, showProductForm, isImporting, onImport, onEdit, onDelete, onSave, onClose, onRefresh }: ProductsTabProps) {
+  const [formData, setFormData] = useState<{
+    id: string;
+    name: string;
+    mainCategory: string;
+    category: string;
+    price: number;
+    description: string;
+    image: string;
+    images: string[];
+    inStock: boolean;
+    featured: boolean;
+  }>({
     id: "",
     name: "",
     mainCategory: "Alimentaire",
@@ -789,7 +813,13 @@ function ProductsTab({ products, editingProduct, showProductForm, isImporting, o
   );
 }
 
-function OrdersTab({ orders, onUpdateStatus, onRefresh }: any) {
+interface OrdersTabProps {
+  orders: Order[];
+  onUpdateStatus: (id: number, status: string) => void;
+  onRefresh: () => void;
+}
+
+function OrdersTab({ orders, onUpdateStatus, onRefresh }: OrdersTabProps) {
   return (
     <div className="space-y-6">
       <h2 className="text-3xl font-serif font-bold text-brand-chocolate">Gestion des Commandes</h2>
@@ -864,7 +894,18 @@ function OrdersTab({ orders, onUpdateStatus, onRefresh }: any) {
   );
 }
 
-function AdsTab({ ads, editingAd, showAdForm, onEdit, onDelete, onSave, onClose, onRefresh }: any) {
+interface AdsTabProps {
+  ads: Ad[];
+  editingAd: Ad | null;
+  showAdForm: boolean;
+  onEdit: (ad: Ad | null) => void;
+  onDelete: (id: number) => void;
+  onSave: (data: any) => void;
+  onClose: () => void;
+  onRefresh: () => void;
+}
+
+function AdsTab({ ads, editingAd, showAdForm, onEdit, onDelete, onSave, onClose, onRefresh }: AdsTabProps) {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
