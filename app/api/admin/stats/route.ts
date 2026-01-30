@@ -7,12 +7,12 @@ export async function GET() {
       sql`SELECT COUNT(*) as count FROM products`,
       sql`SELECT COUNT(*) as count FROM orders WHERE status = 'pending'`,
       sql`SELECT COUNT(*) as count FROM products WHERE featured = true`
-    ]);
+    ]) as any[];
 
     return NextResponse.json({
-      totalProducts: Number(productsCount[0].count),
-      pendingOrders: Number(ordersCount[0].count),
-      featuredProducts: Number(featuredCount[0].count)
+      totalProducts: Number((productsCount as any)[0]?.count || 0),
+      pendingOrders: Number((ordersCount as any)[0]?.count || 0),
+      featuredProducts: Number((featuredCount as any)[0]?.count || 0)
     });
   } catch (error) {
     return NextResponse.json(

@@ -1,7 +1,7 @@
 import { neon } from '@neondatabase/serverless';
 
-if (!process.env.DATABASE_URL) {
-  throw new Error('DATABASE_URL is not set');
-}
+// Use a dummy URL during build if DATABASE_URL is not set
+// This allows the build to complete, but will fail at runtime if not set
+const databaseUrl = process.env.DATABASE_URL || 'postgresql://dummy:dummy@dummy/dummy';
 
-export const sql = neon(process.env.DATABASE_URL);
+export const sql = neon(databaseUrl);

@@ -4,14 +4,15 @@ import { sql } from '@/lib/db';
 // GET - Récupérer un produit par ID
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const result = await sql`
-      SELECT * FROM products WHERE id = ${params.id}
-    `;
+      SELECT * FROM products WHERE id = ${id}
+    ` as any[];
     
-    if (result.length === 0) {
+    if (!result || result.length === 0) {
       return NextResponse.json(
         { error: 'Product not found' },
         { status: 404 }
@@ -30,9 +31,10 @@ export async function GET(
 // PUT - Mettre à jour un produit
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const body = await request.json();
     const {
       name,
@@ -59,11 +61,11 @@ export async function PUT(
         in_stock = ${inStock ?? true},
         featured = ${featured ?? false},
         updated_at = CURRENT_TIMESTAMP
-      WHERE id = ${params.id}
+      WHERE id = ${id}
       RETURNING *
-    `;
+    ` as any[];
 
-    if (result.length === 0) {
+    if (!result || result.length === 0) {
       return NextResponse.json(
         { error: 'Product not found' },
         { status: 404 }
@@ -82,14 +84,15 @@ export async function PUT(
 // DELETE - Supprimer un produit
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const result = await sql`
-      DELETE FROM products WHERE id = ${params.id} RETURNING *
-    `;
+      DELETE FROM products WHERE id = ${id} RETURNING *
+    ` as any[];
 
-    if (result.length === 0) {
+    if (!result || result.length === 0) {
       return NextResponse.json(
         { error: 'Product not found' },
         { status: 404 }

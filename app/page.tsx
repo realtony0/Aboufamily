@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from "react";
 
 export default function HomePage() {
   const featuredProducts = getFeaturedProducts();
-  const revealRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const revealRefs = useRef<(HTMLElement | null)[]>([]);
   const [activeSlide, setActiveSlide] = useState(0);
 
   const slides = [

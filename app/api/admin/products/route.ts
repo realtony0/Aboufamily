@@ -7,7 +7,7 @@ export async function GET() {
     const products = await sql`
       SELECT * FROM products 
       ORDER BY created_at DESC
-    `;
+    ` as any[];
     return NextResponse.json(products);
   } catch (error) {
     return NextResponse.json(
@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
         ${description}, ${image}, ${images || []}, ${inStock ?? true}, ${featured ?? false}
       )
       RETURNING *
-    `;
+    ` as any[];
 
     return NextResponse.json(result[0]);
   } catch (error) {
