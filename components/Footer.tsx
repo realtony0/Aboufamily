@@ -98,6 +98,29 @@ export default function Footer() {
             <Link href="#" className="text-[10px] font-black uppercase tracking-[0.5em] text-brand-chocolate/20 hover:text-brand-caramel transition-colors">Terms</Link>
           </div>
         </div>
+
+        <div className="pt-8 border-t border-brand-cream/10 text-center">
+          <p className="text-[9px] font-medium text-brand-chocolate/30">
+            Site conçu par{" "}
+            <a 
+              href="https://wa.me/221774992742" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-brand-caramel hover:text-brand-chocolate transition-colors font-bold"
+            >
+              Mmb
+            </a>
+            {" "}• WhatsApp:{" "}
+            <a 
+              href="https://wa.me/221774992742" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-brand-caramel hover:text-brand-chocolate transition-colors font-bold"
+            >
+              774992742
+            </a>
+          </p>
+        </div>
       </div>
     </footer>
   );
