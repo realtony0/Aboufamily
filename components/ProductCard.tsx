@@ -14,13 +14,13 @@ export default function ProductCard({ product }: ProductCardProps) {
   const { addToCart } = useCart();
 
   return (
-    <div className="group relative bg-white rounded-2xl md:rounded-3xl overflow-hidden transition-all duration-700 hover:shadow-[0_20px_50px_rgba(61,43,31,0.12)] border border-brand-cream/30 hover:-translate-y-1 md:hover:-translate-y-2">
+    <div className="group relative bg-white rounded-2xl md:rounded-3xl overflow-hidden transition-all duration-700 hover:shadow-[0_20px_50px_rgba(61,43,31,0.12)] border border-brand-cream/30 hover:-translate-y-1 md:hover:-translate-y-2 shadow-md hover:shadow-xl">
       <Link href={`/produit/${product.id}`} className="block relative aspect-square overflow-hidden bg-brand-beige/50">
         <Image
           src={product.image}
           alt={product.name}
           fill
-          className="object-contain p-4 md:p-8 transition-transform duration-1000 group-hover:scale-110"
+          className="object-contain p-3 md:p-8 transition-transform duration-1000 group-hover:scale-110"
           sizes="(max-width: 768px) 50vw, 25vw"
         />
         
@@ -40,23 +40,23 @@ export default function ProductCard({ product }: ProductCardProps) {
       </Link>
       
       <div className="p-4 md:p-6 text-center">
-        <p className="text-[8px] md:text-[9px] uppercase tracking-[0.3em] text-brand-caramel font-bold mb-1 md:mb-2">
+        <p className="text-[9px] md:text-[9px] uppercase tracking-[0.3em] text-brand-caramel font-bold mb-2 md:mb-2">
           {product.category}
         </p>
-        <h3 className="font-serif text-sm md:text-lg font-bold text-brand-chocolate mb-2 md:mb-3 line-clamp-2 md:line-clamp-1 group-hover:text-brand-caramel transition-colors duration-300 min-h-[40px] md:min-h-0">
+        <h3 className="font-serif text-base md:text-lg font-bold text-brand-chocolate mb-3 md:mb-3 line-clamp-2 md:line-clamp-1 group-hover:text-brand-caramel transition-colors duration-300 min-h-[48px] md:min-h-0 leading-tight">
           {product.name}
         </h3>
         <div className="flex items-center justify-center gap-2 md:gap-4 mb-4 md:mb-6">
-          <div className="h-[1px] w-3 md:w-4 bg-brand-cream"></div>
-          <p className="text-sm md:text-base font-bold text-brand-chocolate">
+          <div className="h-[1px] w-4 md:w-4 bg-brand-cream"></div>
+          <p className="text-base md:text-base font-bold text-brand-chocolate">
             {formatPrice(product.price)}
           </p>
-          <div className="h-[1px] w-3 md:w-4 bg-brand-cream"></div>
+          <div className="h-[1px] w-4 md:w-4 bg-brand-cream"></div>
         </div>
         
         <button
           onClick={() => addToCart(product)}
-          className="w-full btn-animate bg-brand-beige border border-brand-chocolate/10 text-brand-chocolate py-3 md:py-3.5 rounded-xl md:rounded-2xl text-[9px] md:text-[10px] font-bold uppercase tracking-widest hover:bg-brand-chocolate hover:text-white transition-all duration-500"
+          className="w-full btn-animate bg-brand-beige border-2 border-brand-chocolate/10 text-brand-chocolate py-3.5 md:py-3.5 rounded-xl md:rounded-2xl text-[10px] md:text-[10px] font-bold uppercase tracking-widest hover:bg-brand-chocolate hover:text-white hover:border-brand-chocolate transition-all duration-500 shadow-sm hover:shadow-md"
         >
           Ajouter au panier
         </button>

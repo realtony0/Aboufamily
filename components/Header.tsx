@@ -28,16 +28,16 @@ export default function Header() {
 
   return (
     <>
-      {/* Header Mobile-First */}
+      {/* Header Mobile-First - Premium Design */}
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 safe-top ${
-        scrolled ? "py-2 md:py-3 glass shadow-lg" : "py-3 md:py-6 bg-transparent"
+        scrolled ? "py-3 md:py-3 glass shadow-xl backdrop-blur-xl" : "py-4 md:py-6 bg-white/80 md:bg-transparent backdrop-blur-sm"
       }`}>
-        <div className="max-w-7xl mx-auto px-4 md:px-6 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 md:gap-3 group">
-            <div className="relative w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden border-2 border-brand-caramel group-hover:border-brand-accent transition-colors duration-500">
+        <div className="max-w-7xl mx-auto px-5 md:px-6 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-3 md:gap-3 group">
+            <div className="relative w-12 h-12 md:w-12 md:h-12 rounded-2xl md:rounded-full overflow-hidden border-2 border-brand-caramel/30 group-hover:border-brand-accent transition-all duration-500 shadow-md group-hover:shadow-lg">
               <Image src="/logo.jpeg" alt="Abou Family" fill className="object-cover" />
             </div>
-            <span className="font-serif text-lg md:text-2xl font-bold tracking-tight text-brand-chocolate hidden sm:block">
+            <span className="font-serif text-xl md:text-2xl font-bold tracking-tight text-brand-chocolate hidden sm:block">
               Abou <span className="text-brand-caramel">Family</span>
             </span>
           </Link>
@@ -79,26 +79,30 @@ export default function Header() {
         </div>
       </header>
 
-      {/* Mobile Bottom Navigation */}
+      {/* Mobile Bottom Navigation - Premium Design */}
       <nav className="md:hidden mobile-nav">
-        <div className="flex items-center justify-around py-2">
+        <div className="flex items-center justify-around py-3 px-2">
           {navItems.map((item) => {
             const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex flex-col items-center gap-1 p-2 min-w-[60px] relative ${
-                  isActive ? "text-brand-accent" : "text-brand-chocolate/40"
+                className={`flex flex-col items-center gap-1.5 p-3 min-w-[70px] relative rounded-2xl transition-all duration-300 ${
+                  isActive 
+                    ? "text-brand-chocolate bg-brand-beige/50 shadow-sm" 
+                    : "text-brand-chocolate/50 hover:text-brand-chocolate/70"
                 }`}
               >
-                <span className="text-2xl">{item.icon}</span>
-                <span className="text-[10px] font-bold">{item.label}</span>
-                {item.badge && item.badge > 0 && (
-                  <span className="absolute top-0 right-1 w-4 h-4 bg-brand-accent text-white text-[9px] font-bold rounded-full flex items-center justify-center">
-                    {item.badge}
-                  </span>
-                )}
+                <span className="text-2xl relative">
+                  {item.icon}
+                  {item.badge && item.badge > 0 && (
+                    <span className="absolute -top-2 -right-2 w-5 h-5 bg-brand-accent text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-lg border-2 border-white">
+                      {item.badge}
+                    </span>
+                  )}
+                </span>
+                <span className={`text-[10px] font-bold ${isActive ? "text-brand-chocolate" : ""}`}>{item.label}</span>
               </Link>
             );
           })}
