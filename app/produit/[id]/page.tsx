@@ -44,7 +44,7 @@ export default function ProductPage() {
     .slice(0, 4);
 
   return (
-    <div className="bg-brand-beige min-h-screen pt-32 pb-32">
+    <div className="bg-brand-beige min-h-screen pt-20 md:pt-32 pb-32">
       <StructuredData 
         type="Product" 
         product={product} 

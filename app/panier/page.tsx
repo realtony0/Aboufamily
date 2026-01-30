@@ -89,7 +89,7 @@ export default function PanierPage() {
   }
 
   return (
-    <div className="bg-brand-beige min-h-screen pt-24 md:pt-40 pb-32 md:pb-32 safe-bottom">
+    <div className="bg-brand-beige min-h-screen pt-20 md:pt-40 pb-32">
       <div className="max-w-7xl mx-auto px-4 md:px-6 reveal" ref={revealRef}>
         <div className="flex flex-col lg:flex-row justify-between items-end mb-12 md:mb-24 gap-6 md:gap-10">
           <div>
