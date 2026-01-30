@@ -18,7 +18,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Abou Business Company | Excellence Gourmande",
+  title: "Abou Family | Excellence Gourmande",
   description: "Découvrez notre sélection exclusive de chocolats Dubai et produits premium au Sénégal.",
 };
 
