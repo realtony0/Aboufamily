@@ -1,0 +1,207 @@
+{
+  "scrapedAt": "2026-01-29T21:55:41.182Z",
+  "source": "https://www.aboubusinesscompany.com",
+  "totalProducts": 20,
+  "products": [
+    {
+      "id": "product-1",
+      "name": "Maillot Senegal",
+      "category": "autres",
+      "price": 25,
+      "description": "-60%",
+      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%20450%20586'%2F%3E",
+      "link": "https://aboubusinesscompany.com/?product=maillot-senegal",
+      "inStock": true
+    },
+    {
+      "id": "product-2",
+      "name": "Nutella 3kg",
+      "category": "chocolats",
+      "price": 25,
+      "description": "-20%",
+      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%20450%20586'%2F%3E",
+      "link": "https://aboubusinesscompany.com/?product=nutella-3kg",
+      "inStock": true
+    },
+    {
+      "id": "product-3",
+      "name": "Fix Dessert Chocolatier",
+      "category": "chocolats",
+      "price": 18,
+      "description": "-44%",
+      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%20450%20586'%2F%3E",
+      "link": "https://aboubusinesscompany.com/?product=fix-dessert-chocolatier",
+      "inStock": true
+    },
+    {
+      "id": "product-4",
+      "name": "Dubaï Chocolat Cotton Candy",
+      "category": "chocolats",
+      "price": 14,
+      "description": "-29%",
+      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%20450%20586'%2F%3E",
+      "link": "https://aboubusinesscompany.com/?product=dubai-chocolat-cotton-candy",
+      "inStock": true
+    },
+    {
+      "id": "product-5",
+      "name": "Chocolat Dubaï  200g",
+      "category": "chocolats",
+      "price": 15,
+      "description": "-33%",
+      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%20450%20586'%2F%3E",
+      "link": "https://aboubusinesscompany.com/?product=chocolat-dubai-200g",
+      "inStock": true
+    },
+    {
+      "id": "product-6",
+      "name": "Casamançaise mangue-madd (1L)",
+      "category": "boissons",
+      "price": 2.7,
+      "description": "-7%",
+      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%20450%20500'%2F%3E",
+      "link": "https://aboubusinesscompany.com/?product=jus-casamancaise-mangue-madd",
+      "inStock": true
+    },
+    {
+      "id": "product-7",
+      "name": "Cookies crunchy pépites de chocolat au lait et chocolat blanc KINDER\nle paquet de 136g",
+      "category": "chocolats",
+      "price": 5,
+      "description": "SOLD OUT",
+      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%20450%20500'%2F%3E",
+      "link": "https://aboubusinesscompany.com/?product=cookies-crunchy-pepites-de-chocolat-au-lait-et-chocolat-blanc-kinderle-paquet-de-136g",
+      "inStock": true
+    },
+    {
+      "id": "product-8",
+      "name": "loup garou",
+      "category": "autres",
+      "price": 20,
+      "description": "-25%",
+      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%20450%20586'%2F%3E",
+      "link": "https://aboubusinesscompany.com/?product=loup-garou-2",
+      "inStock": true
+    },
+    {
+      "id": "product-9",
+      "name": "Loup garou",
+      "category": "autres",
+      "price": 20,
+      "description": "-25%",
+      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%20347%20287'%2F%3E",
+      "link": "https://aboubusinesscompany.com/?product=loup-garou",
+      "inStock": true
+    },
+    {
+      "id": "product-10",
+      "name": "Chargeur Rapide iPhone【Apple Certifié】 20W USB C Adaptateur Secteur et 2M Lightning Apple Original Cable pour iPhone 14/14 Plus/14 Pro/14 Pro Max/13/12/11/SE/X/XS/XR",
+      "category": "autres",
+      "price": 15,
+      "description": "-67%",
+      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%20450%20586'%2F%3E",
+      "link": "https://aboubusinesscompany.com/?product=chargeur-rapide-iphone%e3%80%90apple-certifie%e3%80%91-20w-usb-c-adaptateur-secteur-et-2m-lightning-apple-original-cable-pour-iphone-14-14-plus-14-pro-14-pro-max-13-12-11-se-x-xs-xr-3",
+      "inStock": true
+    },
+    {
+      "id": "product-11",
+      "name": "UNO GEANT",
+      "category": "jeux",
+      "price": 35,
+      "description": "-43%",
+      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%20450%20500'%2F%3E",
+      "link": "https://aboubusinesscompany.com/?product=uno-geant",
+      "inStock": true
+    },
+    {
+      "id": "product-12",
+      "name": "ANTEPYA\nChocolat dubai",
+      "category": "chocolats",
+      "price": 12,
+      "description": "SOLD OUT",
+      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%20450%20495'%2F%3E",
+      "link": "https://aboubusinesscompany.com/?product=antepyachocolat-dubai",
+      "inStock": true
+    },
+    {
+      "id": "product-13",
+      "name": "MONTANA chocolate Bar( cotton candy & pistachio)",
+      "category": "chocolats",
+      "price": 18,
+      "description": "-44%",
+      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%20450%20586'%2F%3E",
+      "link": "https://aboubusinesscompany.com/?product=montane-chocolate-bar-cotton-candy-pistachio",
+      "inStock": true
+    },
+    {
+      "id": "product-14",
+      "name": "POÈME\nPot à tartiner Poeme Pistache Fusion",
+      "category": "autres",
+      "price": 20,
+      "description": "-25%",
+      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%20450%20500'%2F%3E",
+      "link": "https://aboubusinesscompany.com/?product=poemepot-a-tartiner-poeme-pistache-fusion",
+      "inStock": true
+    },
+    {
+      "id": "product-15",
+      "name": "nella delice",
+      "category": "autres",
+      "price": 15,
+      "description": "SOLD OUT",
+      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%20450%20586'%2F%3E",
+      "link": "https://aboubusinesscompany.com/?product=nella-delice",
+      "inStock": true
+    },
+    {
+      "id": "product-16",
+      "name": "Le lait Milsani kondensmilch 10%",
+      "category": "autres",
+      "price": 2,
+      "description": "SOLD OUT",
+      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%20225%20224'%2F%3E",
+      "link": "https://aboubusinesscompany.com/?product=le-lait-milsani-kondensmilch-10",
+      "inStock": true
+    },
+    {
+      "id": "product-17",
+      "name": "MILSANI Kondensmilch 7,5 % 340 g",
+      "category": "autres",
+      "price": 2,
+      "description": "-35%",
+      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%20450%20586'%2F%3E",
+      "link": "https://aboubusinesscompany.com/?product=milsani-kondensmilch-75-340-g",
+      "inStock": true
+    },
+    {
+      "id": "product-18",
+      "name": "-milka oreo\n-milka oreo choco",
+      "category": "chocolats",
+      "price": 3.5,
+      "description": "-29%",
+      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%20450%20586'%2F%3E",
+      "link": "https://aboubusinesscompany.com/?product=milka-oreo-milka-oreo-choco",
+      "inStock": true
+    },
+    {
+      "id": "product-19",
+      "name": "Chocolat Dubaï",
+      "category": "chocolats",
+      "price": 10,
+      "description": "SOLD OUT",
+      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%20390%20586'%2F%3E",
+      "link": "https://aboubusinesscompany.com/?product=chocolat-dubai",
+      "inStock": true
+    },
+    {
+      "id": "product-20",
+      "name": "Chewing gum EXTRA",
+      "category": "biscuits",
+      "price": 2,
+      "description": "-50%",
+      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%20450%20586'%2F%3E",
+      "link": "https://aboubusinesscompany.com/?product=chewing-gum-extra",
+      "inStock": true
+    }
+  ]
+}
