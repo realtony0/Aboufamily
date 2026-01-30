@@ -100,22 +100,22 @@ export default function Footer() {
         </div>
 
         <div className="pt-8 border-t border-brand-cream/10 text-center">
-          <p className="text-[9px] font-medium text-brand-chocolate/30">
+          <p className="text-sm font-medium text-brand-chocolate/50">
             Site conçu par{" "}
             <a 
               href="https://wa.me/221774992742" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-brand-caramel hover:text-brand-chocolate transition-colors font-bold"
+              className="text-brand-caramel hover:text-brand-chocolate transition-colors font-bold text-base underline underline-offset-4"
             >
               Mmb
             </a>
-            {" "}• WhatsApp:{" "}
+            {" "}•{" "}
             <a 
               href="https://wa.me/221774992742" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-brand-caramel hover:text-brand-chocolate transition-colors font-bold"
+              className="text-brand-caramel hover:text-brand-chocolate transition-colors font-bold text-base underline underline-offset-4"
             >
               774992742
             </a>
