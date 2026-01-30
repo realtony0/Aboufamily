@@ -177,7 +177,7 @@ function BoutiqueContent() {
 
 export default function BoutiquePage() {
   return (
-    <div className="bg-brand-beige min-h-screen pt-20 md:pt-32">
+    <div className="bg-brand-beige min-h-screen pt-24 md:pt-32">
       <Suspense fallback={<div className="text-center py-20 md:py-40 font-black uppercase tracking-[0.5em] text-brand-chocolate/10 animate-pulse text-sm md:text-base">Chargement de la collection...</div>}>
         <BoutiqueContent />
       </Suspense>

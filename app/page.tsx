@@ -76,7 +76,7 @@ export default function HomePage() {
   return (
     <div className="bg-brand-beige">
       {/* Hero Section Dynamique avec Slider - Mobile Premium */}
-      <section className="relative min-h-[90vh] md:min-h-screen flex items-center overflow-hidden pt-20 md:pt-0">
+      <section className="relative min-h-[90vh] md:min-h-screen flex items-center overflow-hidden pt-24 md:pt-0">
         {slides.map((slide, index) => (
           <div 
             key={index}

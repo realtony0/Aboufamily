@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 
-type Tab = "dashboard" | "products" | "orders" | "ads" | "settings";
+type Tab = "dashboard" | "products" | "orders" | "ads" | "content" | "settings";
 
 interface Product {
   id: string;
@@ -371,7 +371,7 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="min-h-screen bg-brand-beige pt-20 pb-20">
+    <div className="min-h-screen bg-brand-beige pt-24 pb-20">
       <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
@@ -394,27 +394,31 @@ export default function AdminPage() {
           </div>
         </div>
 
-        {/* Tabs Navigation */}
-        <div className="flex gap-2 mb-8 overflow-x-auto pb-2">
-          {[
-            { id: "dashboard" as Tab, label: "📊 Dashboard", icon: "📊" },
-            { id: "products" as Tab, label: "🛍️ Produits", icon: "🛍️" },
-            { id: "orders" as Tab, label: "📦 Commandes", icon: "📦" },
-            { id: "ads" as Tab, label: "📢 Publicités", icon: "📢" },
-            { id: "settings" as Tab, label: "⚙️ Paramètres", icon: "⚙️" },
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`px-6 py-3 rounded-full text-xs font-bold uppercase tracking-widest whitespace-nowrap transition-all ${
-                activeTab === tab.id
-                  ? "bg-brand-chocolate text-white shadow-lg"
-                  : "bg-white text-brand-chocolate/60 hover:text-brand-chocolate border border-brand-cream"
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
+        {/* Tabs Navigation - Amélioré */}
+        <div className="bg-white rounded-[2rem] p-2 shadow-lg border border-brand-cream/30 mb-8">
+          <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+            {[
+              { id: "dashboard" as Tab, label: "Dashboard", icon: "📊" },
+              { id: "products" as Tab, label: "Produits", icon: "🛍️" },
+              { id: "orders" as Tab, label: "Commandes", icon: "📦" },
+              { id: "ads" as Tab, label: "Publicités", icon: "📢" },
+              { id: "content" as Tab, label: "Contenu", icon: "✏️" },
+              { id: "settings" as Tab, label: "Paramètres", icon: "⚙️" },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-widest whitespace-nowrap transition-all flex items-center gap-2 ${
+                  activeTab === tab.id
+                    ? "bg-brand-chocolate text-white shadow-md"
+                    : "bg-transparent text-brand-chocolate/60 hover:text-brand-chocolate hover:bg-brand-beige"
+                }`}
+              >
+                <span>{tab.icon}</span>
+                <span>{tab.label}</span>
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Message d'import */}
@@ -531,6 +535,11 @@ export default function AdminPage() {
             onClose={() => { setEditingAd(null); setShowAdForm(false); }}
             onRefresh={fetchAds}
           />
+        )}
+
+        {/* Content Tab */}
+        {activeTab === "content" && (
+          <ContentTab />
         )}
 
         {/* Settings Tab */}
@@ -1104,6 +1113,187 @@ function AdsTab({ ads, editingAd, showAdForm, onEdit, onDelete, onSave, onClose,
           )}
         </div>
       </div>
+    </div>
+  );
+}
+
+function ContentTab() {
+  const [content, setContent] = useState<Record<string, Record<string, Record<string, string>>>>({});
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [selectedPage, setSelectedPage] = useState<string>("home");
+
+  const pages = [
+    { id: "home", label: "Page d'accueil" },
+    { id: "boutique", label: "Boutique" },
+    { id: "publicite", label: "Publicité" },
+    { id: "livraison", label: "Livraison Express" },
+    { id: "cadeaux", label: "Commandes Cadeaux" },
+    { id: "partenaire", label: "Devenir Partenaire" },
+  ];
+
+  useEffect(() => {
+    fetchContent();
+  }, [selectedPage]);
+
+  const fetchContent = async () => {
+    try {
+      const response = await fetch(`/api/admin/content?page=${selectedPage}`);
+      if (response.ok) {
+        const data = await response.json();
+        // Organiser par section
+        const organized: Record<string, Record<string, string>> = {};
+        data.forEach((item: any) => {
+          if (!organized[item.section]) {
+            organized[item.section] = {};
+          }
+          organized[item.section][item.key] = item.content;
+        });
+        setContent({ [selectedPage]: organized });
+      }
+    } catch (err) {
+      // Erreur silencieuse
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSave = async (page: string, section: string, key: string, value: string) => {
+    setSaving(true);
+    try {
+      await fetch("/api/admin/content", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ page, section, key, content: value, type: "text" }),
+      });
+      // Mettre à jour l'état local
+      if (!content[page]) content[page] = {};
+      if (!content[page][section]) content[page][section] = {};
+      content[page][section][key] = value;
+      setContent({ ...content });
+    } catch (err) {
+      // Erreur silencieuse
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const getContentValue = (page: string, section: string, key: string, defaultValue: string = "") => {
+    return content[page]?.[section]?.[key] ?? defaultValue;
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h2 className="text-3xl font-serif font-bold text-brand-chocolate">Gestion du Contenu</h2>
+      </div>
+
+      {/* Sélection de page */}
+      <div className="bg-white rounded-[2rem] p-6 shadow-xl border border-brand-cream/30">
+        <label className="block text-[10px] font-black uppercase tracking-widest text-brand-chocolate mb-4">
+          Page à modifier
+        </label>
+        <div className="flex flex-wrap gap-2">
+          {pages.map((page) => (
+            <button
+              key={page.id}
+              onClick={() => { setSelectedPage(page.id); setLoading(true); }}
+              className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all ${
+                selectedPage === page.id
+                  ? "bg-brand-chocolate text-white"
+                  : "bg-brand-beige text-brand-chocolate hover:bg-brand-cream"
+              }`}
+            >
+              {page.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {loading ? (
+        <div className="text-center py-20 text-brand-chocolate/50">Chargement...</div>
+      ) : (
+        <div className="space-y-6">
+          {/* Contenu pour la page d'accueil */}
+          {selectedPage === "home" && (
+            <>
+              <div className="bg-white rounded-[2rem] p-6 shadow-xl border border-brand-cream/30">
+                <h3 className="text-xl font-serif font-bold text-brand-chocolate mb-4">Hero Section - Slide 1</h3>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-[10px] font-black uppercase tracking-widest text-brand-chocolate mb-2">Titre</label>
+                    <input
+                      type="text"
+                      defaultValue={getContentValue("home", "hero", "slide1_title", "L'Elite du Chocolat")}
+                      onBlur={(e) => handleSave("home", "hero", "slide1_title", e.target.value)}
+                      className="w-full bg-brand-beige border border-brand-cream rounded-xl py-3 px-4 text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-black uppercase tracking-widest text-brand-chocolate mb-2">Sous-titre</label>
+                    <input
+                      type="text"
+                      defaultValue={getContentValue("home", "hero", "slide1_subtitle", "Collection Dubai 2026")}
+                      onBlur={(e) => handleSave("home", "hero", "slide1_subtitle", e.target.value)}
+                      className="w-full bg-brand-beige border border-brand-cream rounded-xl py-3 px-4 text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-black uppercase tracking-widest text-brand-chocolate mb-2">Description</label>
+                    <textarea
+                      defaultValue={getContentValue("home", "hero", "slide1_desc", "Découvrez notre iconique chocolat à la pistache et kunafa, une expérience sensorielle inoubliable.")}
+                      onBlur={(e) => handleSave("home", "hero", "slide1_desc", e.target.value)}
+                      className="w-full bg-brand-beige border border-brand-cream rounded-xl py-3 px-4 text-sm h-24"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-[2rem] p-6 shadow-xl border border-brand-cream/30">
+                <h3 className="text-xl font-serif font-bold text-brand-chocolate mb-4">Hero Section - Slide 2</h3>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-[10px] font-black uppercase tracking-widest text-brand-chocolate mb-2">Titre</label>
+                    <input
+                      type="text"
+                      defaultValue={getContentValue("home", "hero", "slide2_title", "Douceur Infinie")}
+                      onBlur={(e) => handleSave("home", "hero", "slide2_title", e.target.value)}
+                      className="w-full bg-brand-beige border border-brand-cream rounded-xl py-3 px-4 text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-black uppercase tracking-widest text-brand-chocolate mb-2">Sous-titre</label>
+                    <input
+                      type="text"
+                      defaultValue={getContentValue("home", "hero", "slide2_subtitle", "Nutella Premium")}
+                      onBlur={(e) => handleSave("home", "hero", "slide2_subtitle", e.target.value)}
+                      className="w-full bg-brand-beige border border-brand-cream rounded-xl py-3 px-4 text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-black uppercase tracking-widest text-brand-chocolate mb-2">Description</label>
+                    <textarea
+                      defaultValue={getContentValue("home", "hero", "slide2_desc", "Le format géant pour les vrais passionnés. L'onctuosité légendaire livrée chez vous.")}
+                      onBlur={(e) => handleSave("home", "hero", "slide2_desc", e.target.value)}
+                      className="w-full bg-brand-beige border border-brand-cream rounded-xl py-3 px-4 text-sm h-24"
+                    />
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+
+          {/* Autres pages - Template simple */}
+          {selectedPage !== "home" && (
+            <div className="bg-white rounded-[2rem] p-6 shadow-xl border border-brand-cream/30">
+              <h3 className="text-xl font-serif font-bold text-brand-chocolate mb-4">Contenu de la page</h3>
+              <p className="text-brand-chocolate/50 text-sm mb-4">
+                Le contenu éditorial pour cette page sera ajouté progressivement.
+              </p>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

@@ -75,7 +75,7 @@ export default function PanierPage() {
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center pt-20 px-4 md:px-6 bg-brand-beige pb-24 md:pb-0">
+      <div className="min-h-screen flex flex-col items-center justify-center pt-24 px-4 md:px-6 bg-brand-beige pb-24 md:pb-0">
         <div className="w-32 h-32 md:w-40 md:h-40 bg-white rounded-[3rem] flex items-center justify-center mb-8 md:mb-12 shadow-xl">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 md:h-16 md:w-16 text-brand-cream" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
@@ -89,7 +89,7 @@ export default function PanierPage() {
   }
 
   return (
-    <div className="bg-brand-beige min-h-screen pt-20 md:pt-40 pb-32">
+    <div className="bg-brand-beige min-h-screen pt-24 md:pt-40 pb-32">
       <div className="max-w-7xl mx-auto px-4 md:px-6 reveal" ref={revealRef}>
         <div className="flex flex-col lg:flex-row justify-between items-end mb-12 md:mb-24 gap-6 md:gap-10">
           <div>

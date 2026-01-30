@@ -59,7 +59,7 @@ export default function ProductPage() {
 
   if (loading) {
     return (
-      <div className="bg-brand-beige min-h-screen pt-20 md:pt-32 pb-32 flex items-center justify-center">
+      <div className="bg-brand-beige min-h-screen pt-24 md:pt-32 pb-32 flex items-center justify-center">
         <p className="text-brand-chocolate/50">Chargement...</p>
       </div>
     );
@@ -81,7 +81,7 @@ export default function ProductPage() {
   };
 
   return (
-    <div className="bg-brand-beige min-h-screen pt-20 md:pt-32 pb-32">
+    <div className="bg-brand-beige min-h-screen pt-24 md:pt-32 pb-32">
       <StructuredData 
         type="Product" 
         product={product} 
