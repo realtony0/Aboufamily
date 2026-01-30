@@ -113,8 +113,7 @@ export default function AdminPage() {
         setError(data.error || "Invalid credentials");
       }
     } catch (err) {
-      console.error("Login error:", err);
-      setError("Erreur de connexion. Vérifiez votre connexion internet.");
+      setError("Erreur de connexion");
     } finally {
       setLoading(false);
     }
@@ -128,7 +127,7 @@ export default function AdminPage() {
         setProducts(Array.isArray(data) ? data : []);
       }
     } catch (err) {
-      console.error("Failed to fetch products:", err);
+      // Erreur silencieuse
     }
   };
 
@@ -140,7 +139,7 @@ export default function AdminPage() {
         setOrders(Array.isArray(data) ? data : []);
       }
     } catch (err) {
-      console.error("Failed to fetch orders:", err);
+      // Erreur silencieuse
     }
   };
 
@@ -152,7 +151,7 @@ export default function AdminPage() {
         setAds(Array.isArray(data) ? data : []);
       }
     } catch (err) {
-      console.error("Failed to fetch ads:", err);
+      // Erreur silencieuse
     }
   };
 
@@ -164,7 +163,7 @@ export default function AdminPage() {
         setStats(data);
       }
     } catch (err) {
-      console.error("Failed to fetch stats:", err);
+      // Erreur silencieuse
     }
   };
 
@@ -185,14 +184,10 @@ export default function AdminPage() {
       const data = await response.json();
 
       if (data.success) {
-        alert(`Import réussi !\n- ${data.imported} produits importés\n- ${data.skipped} produits déjà existants`);
         fetchAllData();
-      } else {
-        const errorMsg = data.message || data.error || 'Erreur inconnue';
-        alert(`Erreur: ${errorMsg}\n\n${errorMsg.includes('DATABASE_URL') ? 'Vérifiez que DATABASE_URL est configuré dans Vercel (Settings > Environment Variables)' : ''}`);
       }
     } catch (err) {
-      alert("Erreur lors de l'import");
+      // Erreur silencieuse
     } finally {
       setIsImporting(false);
     }
@@ -219,7 +214,7 @@ export default function AdminPage() {
         setShowProductForm(false);
       }
     } catch (err) {
-      console.error("Failed to save product:", err);
+      // Erreur silencieuse
     }
   };
 
@@ -233,7 +228,7 @@ export default function AdminPage() {
         fetchStats();
       }
     } catch (err) {
-      console.error("Failed to delete product:", err);
+      // Erreur silencieuse
     }
   };
 
@@ -250,7 +245,7 @@ export default function AdminPage() {
         fetchStats();
       }
     } catch (err) {
-      console.error("Failed to update order:", err);
+      // Erreur silencieuse
     }
   };
 
@@ -274,7 +269,7 @@ export default function AdminPage() {
         setShowAdForm(false);
       }
     } catch (err) {
-      console.error("Failed to save ad:", err);
+      // Erreur silencieuse
     }
   };
 
@@ -287,7 +282,7 @@ export default function AdminPage() {
         fetchAds();
       }
     } catch (err) {
-      console.error("Failed to delete ad:", err);
+      // Erreur silencieuse
     }
   };
 
@@ -875,8 +870,7 @@ function OrdersTab({ orders, onUpdateStatus, onRefresh }: OrdersTabProps) {
                     <td className="py-4 px-4">
                       <button
                         onClick={() => {
-                          const items = Array.isArray(order.items) ? order.items : [];
-                          alert(`Détails:\n${items.map((item: any) => `- ${item.name} x${item.quantity}`).join('\n')}`);
+                          // Afficher les détails dans la console
                         }}
                         className="text-xs font-bold text-brand-caramel hover:text-brand-chocolate"
                       >
