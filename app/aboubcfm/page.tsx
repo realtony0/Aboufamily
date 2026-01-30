@@ -36,12 +36,14 @@ export default function AdminPage() {
   const [showAddForm, setShowAddForm] = useState(false);
 
   useEffect(() => {
-    // Vérifier si l'admin est déjà connecté
-    const token = localStorage.getItem("admin_token");
-    if (token) {
-      setIsAuthenticated(true);
-      fetchProducts();
-      fetchStats();
+    // Vérifier si l'admin est déjà connecté (uniquement côté client)
+    if (typeof window !== "undefined") {
+      const token = localStorage.getItem("admin_token");
+      if (token) {
+        setIsAuthenticated(true);
+        fetchProducts();
+        fetchStats();
+      }
     }
   }, []);
 
@@ -60,7 +62,9 @@ export default function AdminPage() {
       const data = await response.json();
 
       if (data.success) {
-        localStorage.setItem("admin_token", data.token);
+        if (typeof window !== "undefined") {
+          localStorage.setItem("admin_token", data.token);
+        }
         setIsAuthenticated(true);
         fetchProducts();
         fetchStats();
@@ -68,7 +72,8 @@ export default function AdminPage() {
         setError(data.error || "Invalid credentials");
       }
     } catch (err) {
-      setError("Connection error");
+      console.error("Login error:", err);
+      setError("Erreur de connexion. Vérifiez votre connexion internet.");
     } finally {
       setLoading(false);
     }
@@ -77,20 +82,33 @@ export default function AdminPage() {
   const fetchProducts = async () => {
     try {
       const response = await fetch("/api/admin/products");
+      if (!response.ok) {
+        throw new Error("Failed to fetch products");
+      }
       const data = await response.json();
-      setProducts(data);
+      if (Array.isArray(data)) {
+        setProducts(data);
+      } else {
+        console.error("Invalid products data:", data);
+        setProducts([]);
+      }
     } catch (err) {
       console.error("Failed to fetch products:", err);
+      setProducts([]);
     }
   };
 
   const fetchStats = async () => {
     try {
       const response = await fetch("/api/admin/stats");
+      if (!response.ok) {
+        throw new Error("Failed to fetch stats");
+      }
       const data = await response.json();
       setStats(data);
     } catch (err) {
       console.error("Failed to fetch stats:", err);
+      setStats(null);
     }
   };
 
@@ -112,7 +130,9 @@ export default function AdminPage() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("admin_token");
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("admin_token");
+    }
     setIsAuthenticated(false);
     router.push("/");
   };

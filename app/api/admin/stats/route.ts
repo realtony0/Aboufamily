@@ -3,6 +3,16 @@ import { sql } from '@/lib/db';
 
 export async function GET() {
   try {
+    // Vérifier que DATABASE_URL est configuré
+    if (!process.env.DATABASE_URL || process.env.DATABASE_URL.includes('dummy')) {
+      console.error('DATABASE_URL not configured');
+      return NextResponse.json({
+        totalProducts: 0,
+        pendingOrders: 0,
+        featuredProducts: 0
+      });
+    }
+
     const [productsCount, ordersCount, featuredCount] = await Promise.all([
       sql`SELECT COUNT(*) as count FROM products`,
       sql`SELECT COUNT(*) as count FROM orders WHERE status = 'pending'`,
@@ -15,9 +25,11 @@ export async function GET() {
       featuredProducts: Number((featuredCount as any)[0]?.count || 0)
     });
   } catch (error) {
-    return NextResponse.json(
-      { error: 'Failed to fetch stats' },
-      { status: 500 }
-    );
+    console.error('Error fetching stats:', error);
+    return NextResponse.json({
+      totalProducts: 0,
+      pendingOrders: 0,
+      featuredProducts: 0
+    });
   }
 }
