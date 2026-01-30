@@ -8,6 +8,7 @@ import { getProductById, products } from "@/data/products";
 import { useCart } from "@/lib/cart-context";
 import { formatPrice } from "@/lib/utils";
 import ProductCard from "@/components/ProductCard";
+import StructuredData from "@/components/StructuredData";
 
 export default function ProductPage() {
   const params = useParams();
@@ -44,6 +45,19 @@ export default function ProductPage() {
 
   return (
     <div className="bg-brand-beige min-h-screen pt-32 pb-32">
+      <StructuredData 
+        type="Product" 
+        product={product} 
+      />
+      <StructuredData 
+        type="BreadcrumbList" 
+        breadcrumbs={[
+          { name: "Accueil", url: "/" },
+          { name: "Boutique", url: "/boutique" },
+          { name: product.category, url: `/boutique?cat=${product.category}` },
+          { name: product.name, url: `/produit/${product.id}` },
+        ]} 
+      />
       <div className="max-w-[1800px] mx-auto px-6 reveal" ref={revealRef}>
         
         {/* Layout Style Magazine / Apple */}
@@ -54,10 +68,11 @@ export default function ProductPage() {
             <div className="relative aspect-[4/5] md:aspect-square bg-white rounded-[3rem] overflow-hidden shadow-[0_40px_100px_rgba(61,43,31,0.05)] group">
               <Image
                 src={product.image}
-                alt={product.name}
+                alt={`${product.name} - ${product.description}`}
                 fill
                 className="object-contain p-12 md:p-24 transition-transform duration-1000 group-hover:scale-105"
                 priority
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
               
               {/* Badges Flottants */}

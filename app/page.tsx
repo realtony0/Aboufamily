@@ -88,10 +88,11 @@ export default function HomePage() {
                 <div className="absolute inset-0 bg-brand-caramel/5 blur-[120px] rounded-full scale-75 animate-pulse"></div>
                 <Image
                   src={slide.image} 
-                  alt={slide.title} 
+                  alt={`${slide.title} - ${slide.desc} - Abou Family`} 
                   fill 
                   className="object-contain drop-shadow-[0_50px_100px_rgba(61,43,31,0.15)] animate-float"
                   priority
+                  sizes="(max-width: 768px) 100vw, 50vw"
                 />
               </div>
             </div>
@@ -125,7 +126,7 @@ export default function HomePage() {
                 <p className="text-brand-chocolate/60 text-sm md:text-base font-medium mb-6">Dubai, Kinder, Nutella & plus</p>
                 <div className="w-12 h-12 rounded-full border-2 border-brand-chocolate/20 flex items-center justify-center group-hover:bg-brand-chocolate group-hover:text-white group-hover:border-brand-chocolate transition-all duration-500 text-xl">→</div>
               </div>
-              <Image src="/products/dubai-kunafa-pistachio.webp" alt="Chocolat Dubai" width={400} height={400} className="absolute -right-10 -top-10 object-contain opacity-40 group-hover:scale-110 transition-transform duration-1000" />
+              <Image src="/products/dubai-kunafa-pistachio.webp" alt="Chocolat Dubai Kunafa Pistachio - Collection Premium Abou Family" width={400} height={400} className="absolute -right-10 -top-10 object-contain opacity-40 group-hover:scale-110 transition-transform duration-1000" loading="lazy" />
             </Link>
 
             <Link href="/boutique?cat=boissons" className="group relative h-[400px] md:h-[500px] rounded-[2rem] md:rounded-[3rem] overflow-hidden bg-brand-cream reveal shadow-lg hover:shadow-xl transition-all duration-500" ref={(el) => { revealRefs.current[4] = el; }} style={{ transitionDelay: "0.2s" }}>
@@ -134,7 +135,7 @@ export default function HomePage() {
                 <p className="text-brand-chocolate/60 text-sm md:text-base font-medium mb-6">Jus locaux & rafraîchissements</p>
                 <div className="w-12 h-12 rounded-full border-2 border-brand-chocolate/20 flex items-center justify-center group-hover:bg-brand-chocolate group-hover:text-white group-hover:border-brand-chocolate transition-all duration-500 text-xl">→</div>
               </div>
-              <Image src="/products/casamancaise-ananas.jpeg" alt="Boissons" width={400} height={400} className="absolute -right-10 -top-10 object-contain opacity-40 group-hover:scale-110 transition-transform duration-1000" />
+              <Image src="/products/casamancaise-ananas.jpeg" alt="Casamançaise Ananas - Jus de fruits locaux Sénégal" width={400} height={400} className="absolute -right-10 -top-10 object-contain opacity-40 group-hover:scale-110 transition-transform duration-1000" loading="lazy" />
             </Link>
 
             <Link href="/boutique?main=Divers" className="group relative h-[400px] md:h-[500px] rounded-[2rem] md:rounded-[3rem] overflow-hidden bg-white border-2 border-brand-cream/50 reveal shadow-lg hover:shadow-xl transition-all duration-500" ref={(el) => { revealRefs.current[5] = el; }} style={{ transitionDelay: "0.4s" }}>
@@ -143,7 +144,7 @@ export default function HomePage() {
                 <p className="text-brand-chocolate/60 text-sm md:text-base font-medium mb-6">Divertissement pour la famille</p>
                 <div className="w-12 h-12 rounded-full border-2 border-brand-chocolate/20 flex items-center justify-center group-hover:bg-brand-chocolate group-hover:text-white group-hover:border-brand-chocolate transition-all duration-500 text-xl">→</div>
               </div>
-              <Image src="/products/monopoly.jpg" alt="Jeux Monopoly" width={400} height={400} className="absolute -right-10 -top-10 object-contain opacity-40 group-hover:scale-110 transition-transform duration-1000" />
+              <Image src="/products/monopoly.jpg" alt="Monopoly Hasbro - Jeu de société classique" width={400} height={400} className="absolute -right-10 -top-10 object-contain opacity-40 group-hover:scale-110 transition-transform duration-1000" loading="lazy" />
             </Link>
           </div>
         </div>

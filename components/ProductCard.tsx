@@ -18,10 +18,11 @@ export default function ProductCard({ product }: ProductCardProps) {
       <Link href={`/produit/${product.id}`} className="block relative aspect-square overflow-hidden bg-brand-beige/50">
         <Image
           src={product.image}
-          alt={product.name}
+          alt={`${product.name} - ${product.description} - ${formatPrice(product.price)}`}
           fill
           className="object-contain p-3 md:p-8 transition-transform duration-1000 group-hover:scale-110"
           sizes="(max-width: 768px) 50vw, 25vw"
+          loading="lazy"
         />
         
         {/* Overlay Description Rapide - Desktop Only */}
