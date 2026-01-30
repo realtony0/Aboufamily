@@ -34,6 +34,7 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [isImporting, setIsImporting] = useState(false);
 
   useEffect(() => {
     // Vérifier si l'admin est déjà connecté (uniquement côté client)
@@ -137,6 +138,32 @@ export default function AdminPage() {
     router.push("/");
   };
 
+  const handleImportProducts = async () => {
+    if (!confirm("Voulez-vous importer tous les produits depuis data/products.ts ?")) return;
+    
+    setIsImporting(true);
+    try {
+      const response = await fetch("/api/admin/import-products", {
+        method: "POST",
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        alert(`Import réussi !\n- ${data.imported} produits importés\n- ${data.skipped} produits déjà existants`);
+        fetchProducts();
+        fetchStats();
+      } else {
+        alert(`Erreur: ${data.error || data.message}`);
+      }
+    } catch (err) {
+      console.error("Import error:", err);
+      alert("Erreur lors de l'import");
+    } finally {
+      setIsImporting(false);
+    }
+  };
+
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-brand-beige flex items-center justify-center p-6">
@@ -236,15 +263,37 @@ export default function AdminPage() {
 
         {/* Products Table */}
         <div className="bg-white rounded-[3rem] p-10 shadow-xl border border-brand-cream/30">
-          <div className="flex items-center justify-between mb-10">
+          <div className="flex items-center justify-between mb-10 flex-wrap gap-4">
             <h2 className="text-3xl font-serif font-bold text-brand-chocolate">Produits</h2>
-            <button
-              onClick={() => setShowAddForm(!showAddForm)}
-              className="btn-animate bg-brand-chocolate text-white px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest"
-            >
-              + Ajouter un produit
-            </button>
+            <div className="flex gap-3">
+              <button
+                onClick={handleImportProducts}
+                disabled={isImporting}
+                className="btn-animate bg-brand-caramel text-white px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest disabled:opacity-50"
+              >
+                {isImporting ? "Import en cours..." : "📥 Importer produits"}
+              </button>
+              <button
+                onClick={() => setShowAddForm(!showAddForm)}
+                className="btn-animate bg-brand-chocolate text-white px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest"
+              >
+                + Ajouter un produit
+              </button>
+            </div>
           </div>
+
+          {products.length === 0 && (
+            <div className="text-center py-20">
+              <p className="text-brand-chocolate/50 text-lg mb-6">Aucun produit dans la base de données</p>
+              <button
+                onClick={handleImportProducts}
+                disabled={isImporting}
+                className="btn-animate bg-brand-caramel text-white px-12 py-4 rounded-full text-sm font-bold uppercase tracking-widest disabled:opacity-50"
+              >
+                {isImporting ? "Import en cours..." : "📥 Importer les produits depuis data/products.ts"}
+              </button>
+            </div>
+          )}
 
           <div className="overflow-x-auto">
             <table className="w-full">
