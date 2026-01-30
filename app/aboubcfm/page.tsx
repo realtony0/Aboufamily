@@ -324,7 +324,7 @@ export default function AdminPage() {
 
             {error && (
               <div className="bg-red-50 text-red-600 text-sm py-3 px-4 rounded-full">
-                {error}
+                Identifiants incorrects
               </div>
             )}
 
