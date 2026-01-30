@@ -7,7 +7,10 @@ export async function POST() {
     // Vérifier que DATABASE_URL est configuré
     if (!process.env.DATABASE_URL || process.env.DATABASE_URL.includes('dummy')) {
       return NextResponse.json(
-        { error: 'Database not configured' },
+        { 
+          error: 'Database not configured',
+          message: 'Veuillez configurer la variable d\'environnement DATABASE_URL dans les paramètres Vercel. Allez dans Settings > Environment Variables et ajoutez votre connection string Neon PostgreSQL.'
+        },
         { status: 503 }
       );
     }

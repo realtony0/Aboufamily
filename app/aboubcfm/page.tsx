@@ -188,7 +188,8 @@ export default function AdminPage() {
         alert(`Import réussi !\n- ${data.imported} produits importés\n- ${data.skipped} produits déjà existants`);
         fetchAllData();
       } else {
-        alert(`Erreur: ${data.error || data.message}`);
+        const errorMsg = data.message || data.error || 'Erreur inconnue';
+        alert(`Erreur: ${errorMsg}\n\n${errorMsg.includes('DATABASE_URL') ? 'Vérifiez que DATABASE_URL est configuré dans Vercel (Settings > Environment Variables)' : ''}`);
       }
     } catch (err) {
       alert("Erreur lors de l'import");
@@ -474,7 +475,7 @@ export default function AdminPage() {
             showProductForm={showProductForm}
             isImporting={isImporting}
             onImport={handleImportProducts}
-            onEdit={(p) => { setEditingProduct(p); setShowProductForm(true); }}
+            onEdit={(p: Product | null) => { setEditingProduct(p); setShowProductForm(true); }}
             onDelete={handleDeleteProduct}
             onSave={handleSaveProduct}
             onClose={() => { setEditingProduct(null); setShowProductForm(false); }}
@@ -497,7 +498,7 @@ export default function AdminPage() {
             ads={ads}
             editingAd={editingAd}
             showAdForm={showAdForm}
-            onEdit={(a) => { setEditingAd(a); setShowAdForm(true); }}
+            onEdit={(a: Ad | null) => { setEditingAd(a); setShowAdForm(true); }}
             onDelete={handleDeleteAd}
             onSave={handleSaveAd}
             onClose={() => { setEditingAd(null); setShowAdForm(false); }}
