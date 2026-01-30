@@ -71,16 +71,40 @@ export default function AdminPage() {
   const [editingAd, setEditingAd] = useState<Ad | null>(null);
   const [showAdForm, setShowAdForm] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
+  const [importMessage, setImportMessage] = useState<string | null>(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const token = localStorage.getItem("admin_token");
-      if (token) {
-        setIsAuthenticated(true);
+    const token = localStorage.getItem("admin_token");
+    if (token) {
+      setIsAuthenticated(true);
         fetchAllData();
       }
     }
   }, []);
+
+  useEffect(() => {
+    // Initialiser la DB et importer automatiquement si aucun produit
+    if (isAuthenticated && products.length === 0 && !isImporting) {
+      const initAndImport = async () => {
+        try {
+          // Initialiser la base de données (créer les tables)
+          await fetch("/api/admin/init-db", { method: "POST" });
+          
+          // Attendre un peu puis importer
+          await new Promise(resolve => setTimeout(resolve, 500));
+          
+          // Importer les produits
+          handleImportProducts();
+        } catch (err) {
+          // Erreur silencieuse
+        }
+      };
+      
+      const timer = setTimeout(initAndImport, 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [isAuthenticated]);
 
   const fetchAllData = () => {
     fetchProducts();
@@ -105,7 +129,7 @@ export default function AdminPage() {
 
       if (data.success) {
         if (typeof window !== "undefined") {
-          localStorage.setItem("admin_token", data.token);
+        localStorage.setItem("admin_token", data.token);
         }
         setIsAuthenticated(true);
         fetchAllData();
@@ -147,7 +171,7 @@ export default function AdminPage() {
     try {
       const response = await fetch("/api/admin/ads");
       if (response.ok) {
-        const data = await response.json();
+      const data = await response.json();
         setAds(Array.isArray(data) ? data : []);
       }
     } catch (err) {
@@ -176,18 +200,23 @@ export default function AdminPage() {
   };
 
   const handleImportProducts = async () => {
-    if (!confirm("Voulez-vous importer tous les produits depuis data/products.ts ?")) return;
-    
     setIsImporting(true);
+    setImportMessage(null);
     try {
       const response = await fetch("/api/admin/import-products", { method: "POST" });
       const data = await response.json();
 
       if (data.success) {
+        setImportMessage(`✅ ${data.imported} produits importés, ${data.skipped} déjà existants`);
         fetchAllData();
+        setTimeout(() => setImportMessage(null), 5000);
+      } else {
+        setImportMessage(`❌ Erreur: ${data.error || 'Import échoué'}`);
+        setTimeout(() => setImportMessage(null), 5000);
       }
     } catch (err) {
-      // Erreur silencieuse
+      setImportMessage("❌ Erreur de connexion");
+      setTimeout(() => setImportMessage(null), 5000);
     } finally {
       setIsImporting(false);
     }
@@ -388,10 +417,21 @@ export default function AdminPage() {
           ))}
         </div>
 
+        {/* Message d'import */}
+        {importMessage && (
+          <div className={`mb-6 p-4 rounded-xl text-sm font-bold ${
+            importMessage.includes('✅') 
+              ? 'bg-green-50 text-green-700 border border-green-200' 
+              : 'bg-red-50 text-red-700 border border-red-200'
+          }`}>
+            {importMessage}
+          </div>
+        )}
+
         {/* Dashboard Tab */}
         {activeTab === "dashboard" && (
           <div className="space-y-8">
-            {stats && (
+        {stats && (
               <div className="grid md:grid-cols-4 gap-6">
                 <div className="bg-white rounded-[2rem] p-6 shadow-lg border border-brand-cream/30">
                   <p className="text-[10px] font-black uppercase tracking-widest text-brand-caramel mb-2">Produits</p>
@@ -444,20 +484,13 @@ export default function AdminPage() {
                     + Ajouter un produit
                   </button>
                   <button
-                    onClick={handleImportProducts}
-                    disabled={isImporting}
-                    className="w-full bg-brand-caramel text-white py-3 rounded-xl text-xs font-bold uppercase tracking-widest disabled:opacity-50"
-                  >
-                    {isImporting ? "Import en cours..." : "📥 Importer produits"}
-                  </button>
-                  <button
                     onClick={() => { setActiveTab("ads"); setShowAdForm(true); }}
                     className="w-full bg-brand-accent text-white py-3 rounded-xl text-xs font-bold uppercase tracking-widest"
                   >
                     + Ajouter une publicité
                   </button>
-                </div>
-              </div>
+            </div>
+            </div>
             </div>
           </div>
         )}
@@ -469,7 +502,6 @@ export default function AdminPage() {
             editingProduct={editingProduct}
             showProductForm={showProductForm}
             isImporting={isImporting}
-            onImport={handleImportProducts}
             onEdit={(p: Product | null) => { setEditingProduct(p); setShowProductForm(true); }}
             onDelete={handleDeleteProduct}
             onSave={handleSaveProduct}
@@ -516,7 +548,6 @@ interface ProductsTabProps {
   editingProduct: Product | null;
   showProductForm: boolean;
   isImporting: boolean;
-  onImport: () => void;
   onEdit: (product: Product | null) => void;
   onDelete: (id: string) => void;
   onSave: (data: any) => void;
@@ -524,7 +555,7 @@ interface ProductsTabProps {
   onRefresh: () => void;
 }
 
-function ProductsTab({ products, editingProduct, showProductForm, isImporting, onImport, onEdit, onDelete, onSave, onClose, onRefresh }: ProductsTabProps) {
+function ProductsTab({ products, editingProduct, showProductForm, isImporting, onEdit, onDelete, onSave, onClose, onRefresh }: ProductsTabProps) {
   const [formData, setFormData] = useState<{
     id: string;
     name: string;
@@ -588,21 +619,12 @@ function ProductsTab({ products, editingProduct, showProductForm, isImporting, o
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-3xl font-serif font-bold text-brand-chocolate">Gestion des Produits</h2>
-        <div className="flex gap-3">
-          <button
-            onClick={onImport}
-            disabled={isImporting}
-            className="btn-animate bg-brand-caramel text-white px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest disabled:opacity-50"
-          >
-            {isImporting ? "Import..." : "📥 Importer"}
-          </button>
-          <button
-            onClick={() => { onEdit(null); }}
-            className="btn-animate bg-brand-chocolate text-white px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest"
-          >
-            + Nouveau
-          </button>
-        </div>
+        <button
+          onClick={() => { onEdit(null); }}
+          className="btn-animate bg-brand-chocolate text-white px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest"
+        >
+          + Nouveau
+        </button>
       </div>
 
       {showProductForm && (
@@ -723,36 +745,36 @@ function ProductsTab({ products, editingProduct, showProductForm, isImporting, o
               >
                 {editingProduct ? "Modifier" : "Créer"}
               </button>
-              <button
+            <button
                 type="button"
                 onClick={onClose}
                 className="btn-animate bg-white text-brand-chocolate border border-brand-cream px-8 py-3 rounded-xl text-xs font-bold uppercase tracking-widest"
-              >
+            >
                 Annuler
-              </button>
-            </div>
+            </button>
+          </div>
           </form>
         </div>
       )}
 
       <div className="bg-white rounded-[2rem] p-6 shadow-xl border border-brand-cream/30">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-brand-cream/30">
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-brand-cream/30">
                 <th className="text-left py-3 px-4 text-[10px] font-black uppercase tracking-widest text-brand-chocolate">Image</th>
                 <th className="text-left py-3 px-4 text-[10px] font-black uppercase tracking-widest text-brand-chocolate">Nom</th>
                 <th className="text-left py-3 px-4 text-[10px] font-black uppercase tracking-widest text-brand-chocolate">Catégorie</th>
                 <th className="text-left py-3 px-4 text-[10px] font-black uppercase tracking-widest text-brand-chocolate">Prix</th>
                 <th className="text-left py-3 px-4 text-[10px] font-black uppercase tracking-widest text-brand-chocolate">Stock</th>
                 <th className="text-left py-3 px-4 text-[10px] font-black uppercase tracking-widest text-brand-chocolate">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
+                </tr>
+              </thead>
+              <tbody>
               {products.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="text-center py-20 text-brand-chocolate/50">
-                    Aucun produit. Cliquez sur "📥 Importer" pour importer les produits.
+                    {isImporting ? "Import en cours..." : "Aucun produit. Import automatique en cours..."}
                   </td>
                 </tr>
               ) : (
@@ -880,8 +902,8 @@ function OrdersTab({ orders, onUpdateStatus, onRefresh }: OrdersTabProps) {
                   </tr>
                 ))
               )}
-            </tbody>
-          </table>
+              </tbody>
+            </table>
         </div>
       </div>
     </div>
