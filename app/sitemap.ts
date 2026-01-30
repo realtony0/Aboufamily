@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
-import { products } from '@/data/products'
+import { sql } from '@/lib/db'
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://aboufamily.com'
   
   // Pages statiques
@@ -44,13 +44,45 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ]
 
-  // Pages produits dynamiques
-  const productPages = products.map((product) => ({
-    url: `${baseUrl}/produit/${product.id}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly' as const,
-    priority: 0.8,
-  }))
+  // Pages produits dynamiques depuis la DB
+  let productPages: MetadataRoute.Sitemap = [];
+  
+  try {
+    if (process.env.DATABASE_URL && !process.env.DATABASE_URL.includes('dummy')) {
+      const products = await sql`
+        SELECT id, updated_at FROM products
+      ` as any[];
+      
+      productPages = products.map((product) => ({
+        url: `${baseUrl}/produit/${product.id}`,
+        lastModified: product.updated_at ? new Date(product.updated_at) : new Date(),
+        changeFrequency: 'weekly' as const,
+        priority: 0.8,
+      }));
+    } else {
+      // Fallback vers le fichier statique
+      const { products } = await import('@/data/products');
+      productPages = products.map((product) => ({
+        url: `${baseUrl}/produit/${product.id}`,
+        lastModified: new Date(),
+        changeFrequency: 'weekly' as const,
+        priority: 0.8,
+      }));
+    }
+  } catch (error) {
+    // Fallback vers le fichier statique en cas d'erreur
+    try {
+      const { products } = await import('@/data/products');
+      productPages = products.map((product) => ({
+        url: `${baseUrl}/produit/${product.id}`,
+        lastModified: new Date(),
+        changeFrequency: 'weekly' as const,
+        priority: 0.8,
+      }));
+    } catch {
+      // Si même le fallback échoue, on retourne juste les pages statiques
+    }
+  }
 
   return [...staticPages, ...productPages]
 }

@@ -4,25 +4,66 @@ import { useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
-import { getProductById, products } from "@/data/products";
 import { useCart } from "@/lib/cart-context";
 import { formatPrice } from "@/lib/utils";
 import ProductCard from "@/components/ProductCard";
 import StructuredData from "@/components/StructuredData";
+import { Product } from "@/data/products";
 
 export default function ProductPage() {
   const params = useParams();
-  const product = getProductById(params.id as string);
+  const [product, setProduct] = useState<Product | null>(null);
+  const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const revealRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (revealRef.current) {
+    // Charger le produit depuis l'API
+    const fetchProduct = async () => {
+      try {
+        const response = await fetch(`/api/products/${params.id}`);
+        if (response.ok) {
+          const data = await response.json();
+          setProduct(data);
+          
+          // Charger les produits similaires
+          const allProductsResponse = await fetch("/api/products");
+          if (allProductsResponse.ok) {
+            const allProducts = await allProductsResponse.json();
+            const related = (Array.isArray(allProducts) ? allProducts : [])
+              .filter((p: Product) => p.category === data.category && p.id !== data.id)
+              .slice(0, 4);
+            setRelatedProducts(related);
+          }
+        }
+      } catch (err) {
+        // Erreur silencieuse
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    if (params.id) {
+      fetchProduct();
+    }
+  }, [params.id]);
+
+  useEffect(() => {
+    if (revealRef.current && product) {
       revealRef.current.classList.add("active");
     }
   }, [product]);
+
+  if (loading) {
+    return (
+      <div className="bg-brand-beige min-h-screen pt-20 md:pt-32 pb-32 flex items-center justify-center">
+        <p className="text-brand-chocolate/50">Chargement...</p>
+      </div>
+    );
+  }
 
   if (!product) {
     return (
@@ -38,10 +79,6 @@ export default function ProductPage() {
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
   };
-
-  const relatedProducts = products
-    .filter((p) => p.category === product.category && p.id !== product.id)
-    .slice(0, 4);
 
   return (
     <div className="bg-brand-beige min-h-screen pt-20 md:pt-32 pb-32">
@@ -179,7 +216,7 @@ export default function ProductPage() {
         </div>
 
         {/* Section Recommandations (Pleine Largeur) */}
-        {relatedProducts.length > 0 && (
+        {relatedProducts && relatedProducts.length > 0 && (
           <div className="mt-40 pt-40 border-t border-brand-cream/30">
             <div className="flex items-end justify-between mb-20">
               <h2 className="text-5xl md:text-7xl font-serif font-bold text-brand-chocolate tracking-tighter leading-none">

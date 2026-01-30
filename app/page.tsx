@@ -3,13 +3,32 @@
 import Link from "next/link";
 import Image from "next/image";
 import ProductCard from "@/components/ProductCard";
-import { getFeaturedProducts, products } from "@/data/products";
 import { useEffect, useRef, useState } from "react";
+import { Product } from "@/data/products";
 
 export default function HomePage() {
-  const featuredProducts = getFeaturedProducts();
+  const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
   const revealRefs = useRef<(HTMLElement | null)[]>([]);
   const [activeSlide, setActiveSlide] = useState(0);
+
+  useEffect(() => {
+    // Charger les produits vedettes depuis l'API
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch("/api/products");
+        if (response.ok) {
+          const data = await response.json();
+          const products = Array.isArray(data) ? data : [];
+          // Filtrer les produits vedettes
+          const featured = products.filter((p: Product) => p.featured).slice(0, 8);
+          setFeaturedProducts(featured);
+        }
+      } catch (err) {
+        // Erreur silencieuse
+      }
+    };
+    fetchProducts();
+  }, []);
 
   const slides = [
     {

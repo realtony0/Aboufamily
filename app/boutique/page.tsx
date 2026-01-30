@@ -4,7 +4,7 @@ import { Suspense, useState, useMemo, useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import ProductCard from "@/components/ProductCard";
-import { products, categories } from "@/data/products";
+import { categories, Product } from "@/data/products";
 
 function BoutiqueContent() {
   const searchParams = useSearchParams();
@@ -14,7 +14,27 @@ function BoutiqueContent() {
   const [selectedMain, setSelectedMain] = useState<"Alimentaire" | "Divers" | "Tous">("Tous");
   const [selectedCat, setSelectedCat] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
   const revealRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Charger les produits depuis l'API
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch("/api/products");
+        if (response.ok) {
+          const data = await response.json();
+          setProducts(Array.isArray(data) ? data : []);
+        }
+      } catch (err) {
+        // Erreur silencieuse
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProducts();
+  }, []);
 
   useEffect(() => {
     if (mainParam) setSelectedMain(mainParam);
@@ -36,7 +56,7 @@ function BoutiqueContent() {
       );
     }
     return filtered;
-  }, [selectedMain, selectedCat, searchQuery]);
+  }, [products, selectedMain, selectedCat, searchQuery]);
 
   const currentCategories = categories.filter(c => selectedMain === "Tous" || c.main === selectedMain);
 
@@ -127,7 +147,11 @@ function BoutiqueContent() {
             <div className="h-[1px] flex-1 mx-4 md:mx-8 bg-brand-cream/30"></div>
           </div>
 
-          {filteredProducts.length > 0 ? (
+          {loading ? (
+            <div className="text-center py-20 text-brand-chocolate/50">
+              Chargement des produits...
+            </div>
+          ) : filteredProducts.length > 0 ? (
             <div className="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-x-10 md:gap-y-16">
               {filteredProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />
